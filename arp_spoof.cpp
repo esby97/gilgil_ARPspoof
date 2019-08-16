@@ -167,7 +167,7 @@ void arp_relaying(vector<Session*> Sessions){
 
                 fp= pcap_open_live(interface, 2000, 1, 100, errbuf);
                 pcap_sendpacket(fp, const_cast<const unsigned char*>(packet2), packet_length);
-                printf("YEAH! Relay packet success!, length : %d\n", packet_length);
+                printf("Relay packet success!, length : %d\n", packet_length);
                 break;
             }
         }

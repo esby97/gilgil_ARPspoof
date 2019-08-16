@@ -4,6 +4,21 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <string.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <linux/if.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <pcap.h>
+#include <vector>
+#include <arpa/inet.h>
+#include <thread>
+#include <unistd.h>
+
+using namespace std;
 
 typedef struct{
     uint8_t sender_mac[6];
@@ -15,7 +30,7 @@ typedef struct{
 typedef struct{
     uint8_t Dmac[6];
     uint8_t Smac[6];
-    uint8_t type[2];
+    uint16_t type;
 }Ethernet;
 
 typedef struct{
@@ -46,5 +61,11 @@ typedef struct{
     uint8_t dummy2[7];
 }TCP;
 
+void usage();
+void get_my_mac_ip();
+int send_packet(Session* a, int opcode);
+int get_mac(Session* a, int opcode);
+[[noreturn]] void arp_poisoning(vector<Session*> Sessions);
+void arp_relaying(vector<Session*> Sessions);
 
 #endif // SENDARP_HEADER_H
