@@ -1,16 +1,17 @@
+#define TYPE_ARP 0x0806
 #include "sendarp_header.h"
 
 using namespace std;
 
 extern uint8_t broad_mac_addr[];
 extern uint8_t zero_mac_addr[];
-extern unsigned char arp_dummy[];
-extern unsigned char arp_opcode_request[];
-extern unsigned char arp_opcode_reply[];
-extern unsigned char packet1[2000];
-extern unsigned char packet2[2000];
-extern unsigned char my_ip_addr[4];
-extern unsigned char my_mac_addr[6];
+extern uint8_t arp_dummy[];
+extern uint8_t arp_opcode_request[];
+extern uint8_t arp_opcode_reply[];
+extern uint8_t packet1[2000];
+extern uint8_t packet2[2000];
+extern uint8_t my_ip_addr[4];
+extern uint8_t my_mac_addr[6];
 extern char* interface;
 
 void usage(){
@@ -159,13 +160,19 @@ void arp_relaying(vector<Session*> Sessions){
 
         for(auto c : Sessions){
             if(!memcmp(c->sender_mac, sender_mac, 6)){
-                if(ntohs(ethernet->type) == 0x0806) break;
+                if(ntohs(ethernet->type) == TYPE_ARP) break;
                 packet_length = ntohs(ip->total_length) + 14;
+
                 memcpy(packet2, packet, packet_length);
                 memcpy(packet2, c->target_mac,6);
                 memcpy(packet2 + 6, my_mac_addr, 6);
 
-                fp= pcap_open_live(interface, 2000, 1, 100, errbuf);
+                if ((fp= pcap_open_live(interface, 2000, 1, 100, errbuf)) == nullptr)
+                {
+                    fprintf(stderr,"\nUnable to open the adapter. %s is not supported by WinPcap\n", interface);
+                    break;
+                }
+
                 pcap_sendpacket(fp, const_cast<const unsigned char*>(packet2), packet_length);
                 printf("Relay packet success!, length : %d\n", packet_length);
                 break;

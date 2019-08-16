@@ -4,13 +4,13 @@ using namespace std;
 
 uint8_t broad_mac_addr[] = "\xff\xff\xff\xff\xff\xff";
 uint8_t zero_mac_addr[] = "\x00\x00\x00\x00\x00\x00";
-unsigned char arp_dummy[] = "\x00\x01\x08\x00\x06\x04";
-unsigned char arp_opcode_request[] = "\x00\x01";
-unsigned char arp_opcode_reply[] = "\x00\x02";
-unsigned char packet1[2000];
-unsigned char packet2[2000];
-unsigned char my_ip_addr[4];
-unsigned char my_mac_addr[6];
+uint8_t arp_dummy[] = "\x00\x01\x08\x00\x06\x04";
+uint8_t arp_opcode_request[] = "\x00\x01";
+uint8_t arp_opcode_reply[] = "\x00\x02";
+uint8_t packet1[2000];
+uint8_t packet2[2000];
+uint8_t my_ip_addr[4];
+uint8_t my_mac_addr[6];
 char* interface;
 
 int main(int argc, char* argv[]){
