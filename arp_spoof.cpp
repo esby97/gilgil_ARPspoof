@@ -5,6 +5,7 @@ using namespace std;
 
 extern uint8_t broad_mac_addr[];
 extern uint8_t zero_mac_addr[];
+extern uint8_t ethernet_type_arp[];
 extern uint8_t arp_dummy[];
 extern uint8_t arp_opcode_request[];
 extern uint8_t arp_opcode_reply[];
@@ -49,7 +50,7 @@ int send_packet(Session* a, int opcode){
     case 1:
         memcpy(ethernet->Dmac, broad_mac_addr, 6);
         memcpy(ethernet->Smac, my_mac_addr, 6);
-        memcpy(&ethernet->type, "\x08\x06", 2);
+        memcpy(&ethernet->type, ethernet_type_arp, 2);
 
         memcpy(arp->dummy, arp_dummy, 6);
         memcpy(arp->opcode, arp_opcode_request, 2);

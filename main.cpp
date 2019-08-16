@@ -4,6 +4,7 @@ using namespace std;
 
 uint8_t broad_mac_addr[] = "\xff\xff\xff\xff\xff\xff";
 uint8_t zero_mac_addr[] = "\x00\x00\x00\x00\x00\x00";
+uint8_t ethernet_type_arp[] = "\x08\x06";
 uint8_t arp_dummy[] = "\x00\x01\x08\x00\x06\x04";
 uint8_t arp_opcode_request[] = "\x00\x01";
 uint8_t arp_opcode_reply[] = "\x00\x02";
