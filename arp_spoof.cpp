@@ -35,8 +35,8 @@ void get_my_mac_ip(){
     ifr.ifr_addr.sa_family = AF_INET;
     strncpy(ifr.ifr_name, interface, IFNAMSIZ-1);
 
-    if (ioctl(fd1, SIOCGIFHWADDR, &ifr) == 0) memcpy(my_mac_addr, ifr.ifr_addr.sa_data, 6);
-    if (ioctl(fd2, SIOCGIFADDR, &ifr) == 0) memcpy(my_ip_addr, &(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr), 4);
+    if (ioctl(fd1, SIOCGIFHWADDR, &ifr) == 0) memcpy(my_mac_addr, ifr.ifr_addr.sa_data, MAC_ADDRESS_LEN);
+    if (ioctl(fd2, SIOCGIFADDR, &ifr) == 0) memcpy(my_ip_addr, &(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr), IP_ADDRESS_LEN);
 
     close(fd1);
     close(fd2);
@@ -114,10 +114,9 @@ int get_mac(Session* a, int opcode){
             if (res == 0) continue;
             if (res == -1 || res == -2) break;
 
-            int pointer = 14;
-            const ARP* arp = reinterpret_cast<const ARP *>(packet + pointer);
-            if(!memcmp(a->sender_ip, arp->sender_ip, 4)){
-                memcpy(a->sender_mac, arp->sender_mac, 6);
+            const ARP* arp = reinterpret_cast<const ARP *>(packet + ETHERNET_PACKET_LENGTH);
+            if(!memcmp(a->sender_ip, arp->sender_ip, IP_ADDRESS_LEN)){
+                memcpy(a->sender_mac, arp->sender_mac, MAC_ADDRESS_LEN);
                 printf("Gotcha! I Got the sender mac addr.\n");
                 break;
             }
@@ -130,10 +129,9 @@ int get_mac(Session* a, int opcode){
             if (res == 0) continue;
             if (res == -1 || res == -2) break;
 
-            int pointer = 14;
-            const ARP* arp = reinterpret_cast<const ARP *>(packet + pointer);
-            if(!memcmp(a->target_ip, arp->sender_ip, 4)){
-                memcpy(a->target_mac, arp->sender_mac, 6);
+            const ARP* arp = reinterpret_cast<const ARP *>(packet + ETHERNET_PACKET_LENGTH);
+            if(!memcmp(a->target_ip, arp->sender_ip, IP_ADDRESS_LEN)){
+                memcpy(a->target_mac, arp->sender_mac, MAC_ADDRESS_LEN);
                 printf("Gotcha! I Got the target mac addr.\n");
                 break;
             }
