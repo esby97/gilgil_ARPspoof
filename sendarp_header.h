@@ -20,6 +20,18 @@
 
 using namespace std;
 
+extern const uint8_t broad_mac_addr[];
+extern const uint8_t zero_mac_addr[];
+extern const uint8_t ethernet_type_arp[];
+extern const uint8_t arp_dummy[];
+extern const uint8_t arp_opcode_request[];
+extern const uint8_t arp_opcode_reply[];
+extern uint8_t packet1[2000];
+extern uint8_t packet2[2000];
+extern uint8_t my_ip_addr[4];
+extern uint8_t my_mac_addr[6];
+extern char* interface;
+
 typedef struct{
     uint8_t sender_mac[6];
     uint8_t sender_ip[4];
